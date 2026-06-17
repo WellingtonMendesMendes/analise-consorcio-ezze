@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Análise Técnica SQG | Mycon / Coimex → EZZE</title>
+<style>
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#F4F7FB;color:#111827;}
+.header{background:linear-gradient(135deg,#071B3A,#0B3B75);color:white;padding:58px 42px 64px;border-radius:0 0 36px 36px;position:relative;overflow:hidden;}
+.header:after{content:"";position:absolute;right:-110px;top:-160px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(0,166,214,.34),transparent 66%);} 
+.header h1{margin:0;font-size:42px;letter-spacing:-.03em;position:relative;z-index:1;}
+.header p{margin:14px 0 0;color:#DDEBFF;font-size:17px;max-width:760px;line-height:1.55;position:relative;z-index:1;}
+.container{max-width:1280px;margin:34px auto;padding:0 30px;}
+.executive{background:linear-gradient(135deg,#FFFFFF,#EEF9FC);border:1px solid #E4EAF2;border-radius:26px;padding:26px;box-shadow:0 14px 32px rgba(7,27,58,.10);margin-bottom:26px;}
+.executive h2{margin:0 0 10px;color:#071B3A;font-size:24px;}
+.executive p{margin:0;color:#667085;line-height:1.55;}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;}
+.card{background:#fff;border:1px solid #E4EAF2;border-radius:26px;padding:28px;text-decoration:none;color:#111827;box-shadow:0 14px 32px rgba(7,27,58,.10);transition:.2s ease;position:relative;overflow:hidden;}
+.card:before{content:"";position:absolute;left:0;top:0;width:100%;height:6px;background:linear-gradient(90deg,#00A6D6,#00A86B,#B6D900);} 
+.card:hover{transform:translateY(-3px);box-shadow:0 18px 44px rgba(7,27,58,.15);}
+.card h2{margin:0 0 12px;color:#071B3A;font-size:23px;}
+.card p{margin:0;color:#667085;line-height:1.55;}
+.badge{display:inline-block;margin-bottom:14px;background:#EEF9FC;color:#0B3B75;border:1px solid #CDEBF6;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800;}
+.footer{background:#071B3A;color:#DDEBFF;text-align:center;margin-top:46px;padding:30px;border-radius:28px 28px 0 0;}
+@media(max-width:900px){.grid{grid-template-columns:1fr}.header h1{font-size:30px}.header{padding:42px 26px}}
+
+
+/* ==========================================================
+   TEMA EXECUTIVO INSPIRADO NA IDENTIDADE DIGITAL EZZE
+   Aplicado ao portal técnico Mycon / Coimex → EZZE
+   ========================================================== */
+:root{
+  --ezze-navy:#071B3A;
+  --ezze-blue:#0B3B75;
+  --ezze-sky:#00A6D6;
+  --ezze-green:#00A86B;
+  --ezze-lime:#B6D900;
+  --ezze-ink:#111827;
+  --ezze-muted:#667085;
+  --ezze-bg:#F4F7FB;
+  --ezze-card:#FFFFFF;
+  --ezze-border:#E4EAF2;
+  --ezze-warning:#F97316;
+  --ezze-danger:#DC2626;
+  --ezze-radius:22px;
+  --ezze-shadow:0 14px 32px rgba(7,27,58,.10);
+}
+html{scroll-behavior:smooth;}
+body{
+  background:radial-gradient(circle at top left, rgba(0,166,214,.12), transparent 30%), var(--ezze-bg) !important;
+  color:var(--ezze-ink) !important;
+  font-family:Arial, Helvetica, sans-serif !important;
+}
+.ezze-topbar{
+  position:sticky;top:0;z-index:9999;
+  background:rgba(255,255,255,.94);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--ezze-border);
+  box-shadow:0 8px 24px rgba(7,27,58,.08);
+}
+.ezze-nav-wrap{
+  max-width:1700px;margin:0 auto;padding:13px 36px;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+}
+.ezze-brand{display:flex;align-items:center;gap:13px;text-decoration:none;color:var(--ezze-navy);}
+.ezze-mark{
+  width:42px;height:42px;border-radius:14px;
+  background:linear-gradient(135deg,var(--ezze-blue),var(--ezze-sky));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:14px;
+  box-shadow:0 10px 20px rgba(0,166,214,.22);
+}
+.ezze-brand strong{font-size:16px;display:block;line-height:1.05;}
+.ezze-brand span{font-size:12px;color:var(--ezze-muted);display:block;margin-top:2px;}
+.ezze-links{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.ezze-links a{
+  text-decoration:none;color:var(--ezze-navy);font-weight:700;font-size:13px;
+  padding:10px 13px;border-radius:999px;border:1px solid transparent;
+  transition:.18s ease;background:transparent;
+}
+.ezze-links a:hover{background:#EEF7FB;border-color:#CDEBF6;color:var(--ezze-blue);transform:translateY(-1px);}
+.ezze-links a.ezze-cta{background:linear-gradient(135deg,var(--ezze-green),var(--ezze-lime));color:#06351F;border:0;}
+.header{
+  background:linear-gradient(135deg,var(--ezze-navy),var(--ezze-blue)) !important;
+  color:#fff !important;
+  border-bottom:0 !important;
+  box-shadow:inset 0 -1px 0 rgba(255,255,255,.12);
+  border-radius:0 0 34px 34px;
+  position:relative;overflow:hidden;
+}
+.header:after{
+  content:"";position:absolute;right:-120px;top:-160px;width:420px;height:420px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,166,214,.34),transparent 66%);
+}
+.header h1{font-weight:900 !important;letter-spacing:-.02em !important;}
+.header p{color:#DDEBFF !important;}
+.container{max-width:1700px !important;}
+.card,.note,.kpi{
+  border:1px solid var(--ezze-border) !important;
+  border-radius:var(--ezze-radius) !important;
+  box-shadow:var(--ezze-shadow) !important;
+  background:var(--ezze-card) !important;
+}
+.card:hover,.kpi:hover{box-shadow:0 18px 42px rgba(7,27,58,.14) !important;}
+.card h2,.section-title,.note h2{
+  color:var(--ezze-navy) !important;
+  letter-spacing:-.01em;
+}
+.card h2{border-left:6px solid var(--ezze-sky) !important;}
+.kpi-title,.kpi .label{color:var(--ezze-muted) !important;letter-spacing:.05em;text-transform:uppercase;}
+.kpi-value,.kpi .value{color:var(--ezze-navy) !important;font-weight:900 !important;}
+.orange{color:var(--ezze-warning) !important}.red{color:var(--ezze-danger) !important}.green{color:var(--ezze-green) !important}
+th,.table th{
+  background:var(--ezze-navy) !important;
+  color:#fff !important;
+}
+td,.table td{border-color:var(--ezze-border) !important;}
+tr:nth-child(even) td{background:#F8FBFE !important;}
+.formula{background:#071B3A !important;border:1px solid rgba(0,166,214,.25);}
+.alert{background:#FFF7ED !important;border-left-color:var(--ezze-warning) !important;}
+.risk{background:#FEF2F2 !important;border-left-color:var(--ezze-danger) !important;}
+.ok{background:#ECFDF5 !important;border-left-color:var(--ezze-green) !important;}
+.footer{
+  background:var(--ezze-navy);color:#DDEBFF !important;margin:40px 0 0 !important;padding:28px 40px !important;
+  border-radius:28px 28px 0 0;
+}
+.ezze-page-actions{
+  max-width:1700px;margin:0 auto 40px;padding:0 42px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+}
+.ezze-page-actions a{
+  text-decoration:none;background:#fff;color:var(--ezze-navy);border:1px solid var(--ezze-border);
+  padding:12px 16px;border-radius:999px;font-weight:800;box-shadow:0 8px 20px rgba(7,27,58,.08);
+}
+.ezze-page-actions a:hover{background:#EEF7FB;border-color:#CDEBF6;}
+.ezze-executive-strip{
+  background:linear-gradient(135deg,#FFFFFF,#EEF9FC);
+  border:1px solid var(--ezze-border);border-radius:26px;padding:24px;margin-bottom:24px;box-shadow:var(--ezze-shadow);
+}
+.ezze-executive-strip h2{margin:0 0 10px;color:var(--ezze-navy);font-size:24px;}
+.ezze-executive-strip p{margin:0;color:var(--ezze-muted);line-height:1.55;}
+@media(max-width:900px){.ezze-nav-wrap{padding:12px 18px}.ezze-links a{font-size:12px;padding:8px 10px}.header{border-radius:0 0 22px 22px}.ezze-page-actions{padding:0 20px}.grid{grid-template-columns:1fr !important}}
+
+</style>
+</head>
+<body>
+
+<div class="ezze-topbar">
+  <div class="ezze-nav-wrap">
+    <a class="ezze-brand" href="index.html">
+      <div class="ezze-mark">EZZE</div>
+      <div><strong>Análise Técnica SQG</strong><span>Mycon / Coimex → EZZE</span></div>
+    </a>
+    <div class="ezze-links">
+      <a href="index.html">Início</a>
+      <a href="bacen.html">BACEN</a>
+      <a href="email.html">SQG E-mail</a>
+      <a href="operacional.html">Operacional</a>
+      <a href="viabilidade.html">Viabilidade</a>
+      <a class="ezze-cta" href="resultado.html">Resultado Econômico</a>
+    </div>
+  </div>
+</div>
+
+<div class="header">
+<h1>Análise Técnica SQG — Mycon / Coimex → EZZE</h1>
+<p>Portal executivo de apoio à decisão para avaliação da carteira de Seguro de Quebra de Garantia, reunindo dados BACEN, informações declaradas, operação, viabilidade, engenharia reversa e conclusão técnica.</p>
+</div>
+<div class="container">
+<div class="executive">
+<h2>Visão geral do estudo</h2>
+<p>O material organiza cinco dashboards complementares para permitir uma leitura técnica, comercial e atuarial da operação, com rastreabilidade dos cálculos, evidências e limitações do estudo.</p>
+</div>
+<div class="grid">
+<a class="card" href="bacen.html"><span class="badge">Dashboard 01</span><h2>BACEN</h2><p>Carteira regulatória, grupos comparáveis, inadimplência, evolução da administradora e leitura macro da carteira.</p></a>
+<a class="card" href="email.html"><span class="badge">Dashboard 02</span><h2>SQG E-mail</h2><p>Prêmio, sinistro, indenização, ressarcimento, recuperação, loss ratio e resultado técnico informado.</p></a>
+<a class="card" href="operacional.html"><span class="badge">Dashboard 03</span><h2>Operacional</h2><p>Contratos detalhados, fases, exposição, parceiros, concentração e composição granular da carteira.</p></a>
+<a class="card" href="viabilidade.html"><span class="badge">Dashboard 04</span><h2>Viabilidade</h2><p>Diagnóstico consolidado, score técnico, divergências, perguntas críticas e recomendação preliminar.</p></a>
+<a class="card" href="resultado.html"><span class="badge">Dashboard 05</span><h2>Resultado Econômico e Engenharia Reversa</h2><p>Memória de cálculo, racional das contas, trilha de auditoria, limitações do estudo e conclusão executiva.</p></a>
+</div>
+</div>
+<div class="footer">Estudo técnico de viabilidade SQG | Uso interno | Mycon / Coimex → EZZE</div>
+</body>
+</html>

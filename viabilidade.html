@@ -1,0 +1,853 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Estudo de Viabilidade SQG | Mycon / EZZE</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: #F5F6F8;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #1F2937;
+}
+
+.header {
+    background: #111827;
+    color: white;
+    padding: 28px 42px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h1 { margin: 0; font-size: 27px; font-weight: 700; }
+.header p { margin: 7px 0 0; color: #D1D5DB; font-size: 14px; }
+
+.container {
+    padding: 30px 42px;
+    max-width: 1700px;
+    margin: 0 auto;
+}
+
+.note {
+    background: white;
+    border: 1px solid #E5E7EB;
+    border-left: 5px solid #0EA5A3;
+    padding: 18px 22px;
+    margin-bottom: 22px;
+    border-radius: 10px;
+}
+
+.note.warning { border-left-color: #F97316; }
+.note.danger { border-left-color: #DC2626; }
+
+.note h2 { margin: 0 0 8px 0; font-size: 19px; }
+.note p { margin: 7px 0; line-height: 1.5; font-size: 14px; }
+
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.kpi {
+    background: white;
+    border: 1px solid #E5E7EB;
+    border-radius: 10px;
+    padding: 18px;
+    min-height: 96px;
+}
+
+.kpi-title {
+    color: #6B7280;
+    font-size: 12px;
+    margin-bottom: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.kpi-value { font-size: 25px; font-weight: 700; color: #111827; }
+.orange { color: #F97316; }
+.green { color: #16A34A; }
+.red { color: #DC2626; }
+
+.section-title {
+    font-size: 21px;
+    margin: 30px 0 13px;
+    color: #111827;
+    font-weight: 700;
+}
+
+.card {
+    background: white;
+    border: 1px solid #E5E7EB;
+    border-radius: 10px;
+    padding: 18px;
+    margin-bottom: 18px;
+    overflow: hidden;
+}
+
+.two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.table-scroll {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #E5E7EB;
+    border-radius: 10px;
+    background: white;
+}
+
+.table {
+    width: max-content;
+    min-width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    background: white;
+}
+
+.table th {
+    background: #111827;
+    color: white;
+    padding: 10px 14px;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: 700;
+    border: 1px solid #111827;
+    white-space: nowrap;
+}
+
+.table td {
+    padding: 9px 14px;
+    border: 1px solid #E5E7EB;
+    color: #111827;
+    background: white;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.table tr:hover td {
+    background: #F9FAFB;
+}
+
+.table-compact {
+    min-width: 1600px;
+}
+
+.footer {
+    color: #6B7280;
+    font-size: 12px;
+    margin-top: 30px;
+    padding-bottom: 30px;
+    text-align: center;
+}
+
+@media (max-width: 1100px) {
+    .kpi-grid, .two-col { grid-template-columns: 1fr; }
+}
+
+
+/* ==========================================================
+   TEMA EXECUTIVO INSPIRADO NA IDENTIDADE DIGITAL EZZE
+   Aplicado ao portal técnico Mycon / Coimex → EZZE
+   ========================================================== */
+:root{
+  --ezze-navy:#071B3A;
+  --ezze-blue:#0B3B75;
+  --ezze-sky:#00A6D6;
+  --ezze-green:#00A86B;
+  --ezze-lime:#B6D900;
+  --ezze-ink:#111827;
+  --ezze-muted:#667085;
+  --ezze-bg:#F4F7FB;
+  --ezze-card:#FFFFFF;
+  --ezze-border:#E4EAF2;
+  --ezze-warning:#F97316;
+  --ezze-danger:#DC2626;
+  --ezze-radius:22px;
+  --ezze-shadow:0 14px 32px rgba(7,27,58,.10);
+}
+html{scroll-behavior:smooth;}
+body{
+  background:radial-gradient(circle at top left, rgba(0,166,214,.12), transparent 30%), var(--ezze-bg) !important;
+  color:var(--ezze-ink) !important;
+  font-family:Arial, Helvetica, sans-serif !important;
+}
+.ezze-topbar{
+  position:sticky;top:0;z-index:9999;
+  background:rgba(255,255,255,.94);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--ezze-border);
+  box-shadow:0 8px 24px rgba(7,27,58,.08);
+}
+.ezze-nav-wrap{
+  max-width:1700px;margin:0 auto;padding:13px 36px;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+}
+.ezze-brand{display:flex;align-items:center;gap:13px;text-decoration:none;color:var(--ezze-navy);}
+.ezze-mark{
+  width:42px;height:42px;border-radius:14px;
+  background:linear-gradient(135deg,var(--ezze-blue),var(--ezze-sky));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:14px;
+  box-shadow:0 10px 20px rgba(0,166,214,.22);
+}
+.ezze-brand strong{font-size:16px;display:block;line-height:1.05;}
+.ezze-brand span{font-size:12px;color:var(--ezze-muted);display:block;margin-top:2px;}
+.ezze-links{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.ezze-links a{
+  text-decoration:none;color:var(--ezze-navy);font-weight:700;font-size:13px;
+  padding:10px 13px;border-radius:999px;border:1px solid transparent;
+  transition:.18s ease;background:transparent;
+}
+.ezze-links a:hover{background:#EEF7FB;border-color:#CDEBF6;color:var(--ezze-blue);transform:translateY(-1px);}
+.ezze-links a.ezze-cta{background:linear-gradient(135deg,var(--ezze-green),var(--ezze-lime));color:#06351F;border:0;}
+.header{
+  background:linear-gradient(135deg,var(--ezze-navy),var(--ezze-blue)) !important;
+  color:#fff !important;
+  border-bottom:0 !important;
+  box-shadow:inset 0 -1px 0 rgba(255,255,255,.12);
+  border-radius:0 0 34px 34px;
+  position:relative;overflow:hidden;
+}
+.header:after{
+  content:"";position:absolute;right:-120px;top:-160px;width:420px;height:420px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,166,214,.34),transparent 66%);
+}
+.header h1{font-weight:900 !important;letter-spacing:-.02em !important;}
+.header p{color:#DDEBFF !important;}
+.container{max-width:1700px !important;}
+.card,.note,.kpi{
+  border:1px solid var(--ezze-border) !important;
+  border-radius:var(--ezze-radius) !important;
+  box-shadow:var(--ezze-shadow) !important;
+  background:var(--ezze-card) !important;
+}
+.card:hover,.kpi:hover{box-shadow:0 18px 42px rgba(7,27,58,.14) !important;}
+.card h2,.section-title,.note h2{
+  color:var(--ezze-navy) !important;
+  letter-spacing:-.01em;
+}
+.card h2{border-left:6px solid var(--ezze-sky) !important;}
+.kpi-title,.kpi .label{color:var(--ezze-muted) !important;letter-spacing:.05em;text-transform:uppercase;}
+.kpi-value,.kpi .value{color:var(--ezze-navy) !important;font-weight:900 !important;}
+.orange{color:var(--ezze-warning) !important}.red{color:var(--ezze-danger) !important}.green{color:var(--ezze-green) !important}
+th,.table th{
+  background:var(--ezze-navy) !important;
+  color:#fff !important;
+}
+td,.table td{border-color:var(--ezze-border) !important;}
+tr:nth-child(even) td{background:#F8FBFE !important;}
+.formula{background:#071B3A !important;border:1px solid rgba(0,166,214,.25);}
+.alert{background:#FFF7ED !important;border-left-color:var(--ezze-warning) !important;}
+.risk{background:#FEF2F2 !important;border-left-color:var(--ezze-danger) !important;}
+.ok{background:#ECFDF5 !important;border-left-color:var(--ezze-green) !important;}
+.footer{
+  background:var(--ezze-navy);color:#DDEBFF !important;margin:40px 0 0 !important;padding:28px 40px !important;
+  border-radius:28px 28px 0 0;
+}
+.ezze-page-actions{
+  max-width:1700px;margin:0 auto 40px;padding:0 42px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+}
+.ezze-page-actions a{
+  text-decoration:none;background:#fff;color:var(--ezze-navy);border:1px solid var(--ezze-border);
+  padding:12px 16px;border-radius:999px;font-weight:800;box-shadow:0 8px 20px rgba(7,27,58,.08);
+}
+.ezze-page-actions a:hover{background:#EEF7FB;border-color:#CDEBF6;}
+.ezze-executive-strip{
+  background:linear-gradient(135deg,#FFFFFF,#EEF9FC);
+  border:1px solid var(--ezze-border);border-radius:26px;padding:24px;margin-bottom:24px;box-shadow:var(--ezze-shadow);
+}
+.ezze-executive-strip h2{margin:0 0 10px;color:var(--ezze-navy);font-size:24px;}
+.ezze-executive-strip p{margin:0;color:var(--ezze-muted);line-height:1.55;}
+@media(max-width:900px){.ezze-nav-wrap{padding:12px 18px}.ezze-links a{font-size:12px;padding:8px 10px}.header{border-radius:0 0 22px 22px}.ezze-page-actions{padding:0 20px}.grid{grid-template-columns:1fr !important}}
+
+</style>
+</head>
+
+<body>
+
+<div class="ezze-topbar">
+  <div class="ezze-nav-wrap">
+    <a class="ezze-brand" href="index.html">
+      <div class="ezze-mark">EZZE</div>
+      <div><strong>Análise Técnica SQG</strong><span>Mycon / Coimex → EZZE</span></div>
+    </a>
+    <div class="ezze-links">
+      <a href="index.html">Início</a>
+      <a href="bacen.html">BACEN</a>
+      <a href="email.html">SQG E-mail</a>
+      <a href="operacional.html">Operacional</a>
+      <a href="viabilidade.html">Viabilidade</a>
+      <a class="ezze-cta" href="resultado.html">Resultado Econômico</a>
+    </div>
+  </div>
+</div>
+
+
+<div class="header">
+    <div>
+        <h1>Estudo de Viabilidade SQG | Mycon / EZZE</h1>
+        <p>Comparativo consolidado: Bacen, resultado securitário e carteira operacional</p>
+    </div>
+    <div><strong>EZZE</strong></div>
+</div>
+
+<div class="container">
+
+    <div class="note">
+        <h2>Objetivo do estudo</h2>
+        <p>Este painel consolida os três dashboards anteriores para avaliar a viabilidade técnica de migração da carteira SQG atualmente na CNP para a EZZE.</p>
+        <p>A análise separa claramente: dados regulatórios Bacen, experiência securitária informada no e-mail e base operacional detalhada.</p>
+    </div>
+
+    <div class="kpi-grid">
+        <div class="kpi"><div class="kpi-title">Score técnico</div><div class="kpi-value red">33/100</div></div>
+        <div class="kpi"><div class="kpi-title">Classificação</div><div class="kpi-value red" style="font-size:18px;">Viabilidade restrita, exigindo reprecificação ou revisão de aceitação.</div></div>
+        <div class="kpi"><div class="kpi-title">Resultado técnico acumulado</div><div class="kpi-value red">R$ -1.118.259,89</div></div>
+        <div class="kpi"><div class="kpi-title">Margem técnica acumulada</div><div class="kpi-value red">-13,40%</div></div>
+    </div>
+
+    <div class="kpi-grid">
+        <div class="kpi"><div class="kpi-title">Carteira Bacen</div><div class="kpi-value">69.410</div></div>
+        <div class="kpi"><div class="kpi-title">Contratos operacionais</div><div class="kpi-value">798</div></div>
+        <div class="kpi"><div class="kpi-title">Exposição operacional</div><div class="kpi-value">R$ 48,60 mi</div></div>
+        <div class="kpi"><div class="kpi-title">Sinistralidade acumulada</div><div class="kpi-value orange">83,88%</div></div>
+    </div>
+
+    <div class="note warning">
+        <h2>Diagnóstico executivo</h2>
+        <p><strong>Viabilidade restrita, exigindo reprecificação ou revisão de aceitação.</strong></p>
+        <p>A carteira possui escala operacional e base granular suficiente para análise, porém apresenta deterioração técnica recente, resultado acumulado negativo e divergências relevantes entre o e-mail, Bacen e bases operacionais.</p>
+        <p>A recomendação é prosseguir apenas de forma condicionada, mediante reconciliação das bases, esclarecimento das perguntas críticas e eventual reprecificação/limitação de aceitação.</p>
+    </div>
+
+    <h2 class="section-title">1. Diagnóstico Consolidado</h2>
+    <div class="card"><table border="1" class="dataframe table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Item</th>
+      <th>Conclusão</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Diagnóstico preliminar</td>
+      <td>A carteira possui escala operacional relevante, mas a experiência securitária recente indica deterioração material.</td>
+    </tr>
+    <tr>
+      <td>Classificação</td>
+      <td>Viabilidade restrita, exigindo reprecificação ou revisão de aceitação.</td>
+    </tr>
+    <tr>
+      <td>Score técnico</td>
+      <td>33/100</td>
+    </tr>
+    <tr>
+      <td>Principal força</td>
+      <td>Base operacional permite análise granular de contratos, fases, valores e parceiros.</td>
+    </tr>
+    <tr>
+      <td>Principal fragilidade</td>
+      <td>Resultado técnico negativo em 2025/2026 e divergências entre e-mail, Bacen e bases.</td>
+    </tr>
+    <tr>
+      <td>Decisão recomendada</td>
+      <td>Prosseguir apenas de forma condicionada, com reconciliação das bases, resposta às perguntas críticas e eventual reprecificação.</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<h2 class="section-title">2. Score de Viabilidade</h2>
+
+<div class="card">
+    <div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>                <div id="4b0966e8-0100-4b13-a3a7-67a9bfb38f30" class="plotly-graph-div" style="height:360px; width:100%;"></div>            <script type="text/javascript">                                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("4b0966e8-0100-4b13-a3a7-67a9bfb38f30")) {                    Plotly.newPlot(                        "4b0966e8-0100-4b13-a3a7-67a9bfb38f30",                        [{"gauge":{"axis":{"range":[0,100]},"steps":[{"color":"#FEE2E2","range":[0,50]},{"color":"#FFEDD5","range":[50,75]},{"color":"#DCFCE7","range":[75,100]}],"threshold":{"line":{"color":"#111827","width":4},"thickness":0.75,"value":33}},"mode":"gauge+number","title":{"text":"Score Técnico de Viabilidade"},"value":33,"type":"indicator"}],                        {"template":{"data":{"barpolar":[{"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"type":"carpet"}],"choropleth":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"choropleth"}],"contourcarpet":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"contourcarpet"}],"contour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"contour"}],"heatmapgl":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"heatmapgl"}],"heatmap":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"heatmap"}],"histogram2dcontour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2dcontour"}],"histogram2d":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2d"}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"mesh3d":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"mesh3d"}],"parcoords":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"parcoords"}],"pie":[{"automargin":true,"type":"pie"}],"scatter3d":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatter3d"}],"scattercarpet":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattercarpet"}],"scattergeo":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergeo"}],"scattergl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergl"}],"scattermapbox":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermapbox"}],"scatterpolargl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolargl"}],"scatterpolar":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolar"}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"scatterternary":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterternary"}],"surface":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"surface"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}]},"layout":{"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"autotypenumbers":"strict","coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]],"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]},"colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"geo":{"bgcolor":"white","lakecolor":"white","landcolor":"white","showlakes":true,"showland":true,"subunitcolor":"#C8D4E3"},"hoverlabel":{"align":"left"},"hovermode":"closest","mapbox":{"style":"light"},"paper_bgcolor":"white","plot_bgcolor":"white","polar":{"angularaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""},"bgcolor":"white","radialaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""}},"scene":{"xaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"},"yaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"},"zaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"ternary":{"aaxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"baxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"bgcolor":"white","caxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""}},"title":{"x":0.05},"xaxis":{"automargin":true,"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","zerolinewidth":2},"yaxis":{"automargin":true,"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","zerolinewidth":2}}},"title":{"font":{"size":18},"text":"Diagnóstico de Viabilidade","x":0.5,"xanchor":"center"},"font":{"family":"Arial","size":12,"color":"#1F2937"},"margin":{"l":45,"r":25,"t":75,"b":80},"height":360,"paper_bgcolor":"white","plot_bgcolor":"white"},                        {"responsive": true}                    )                };                            </script>        </div>
+</div>
+
+<div class="note warning">
+    <h2>Como o score foi calculado</h2>
+    <p>O score técnico parte de 100 pontos e avalia sete dimensões: inadimplência Bacen, tendência da carteira, resultado técnico SQG, sinistralidade, recuperação, concentração operacional e qualidade dos dados.</p>
+    <p>Quanto menor a pontuação, maior a necessidade de esclarecimentos, reprecificação, limitação de aceitação ou revisão das condições técnicas.</p>
+</div>
+
+<div class="card">
+    <div class="table-scroll">
+        <table border="1" class="dataframe table table-compact">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Critério</th>
+      <th>Peso Máximo</th>
+      <th>Pontos Obtidos</th>
+      <th>Leitura Técnica</th>
+      <th>Evidência</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Inadimplência Bacen - contemplados</td>
+      <td>20</td>
+      <td>10</td>
+      <td>Avalia a qualidade macro da carteira contemplada da administradora.</td>
+      <td>Inadimplência Bacen de contemplados: 7,73%</td>
+    </tr>
+    <tr>
+      <td>Tendência da carteira Bacen</td>
+      <td>10</td>
+      <td>7</td>
+      <td>Avalia se a carteira está crescendo, estável ou em retração.</td>
+      <td>Crescimento da carteira no período: 7,87%</td>
+    </tr>
+    <tr>
+      <td>Resultado técnico SQG</td>
+      <td>25</td>
+      <td>0</td>
+      <td>Avalia a rentabilidade técnica acumulada da operação securitária.</td>
+      <td>Margem técnica acumulada: -13,40% | Resultado: R$ -1.118.259,89</td>
+    </tr>
+    <tr>
+      <td>Sinistralidade acumulada SQG</td>
+      <td>20</td>
+      <td>10</td>
+      <td>Avalia quanto do prêmio foi consumido por sinistros.</td>
+      <td>Sinistralidade acumulada: 83,88%</td>
+    </tr>
+    <tr>
+      <td>Taxa de recuperação</td>
+      <td>10</td>
+      <td>5</td>
+      <td>Avalia a capacidade de recuperação após indenização.</td>
+      <td>Recuperação acumulada: 22,73%</td>
+    </tr>
+    <tr>
+      <td>Concentração operacional</td>
+      <td>10</td>
+      <td>1</td>
+      <td>Avalia concentração de exposição nos maiores contratos.</td>
+      <td>Top 20 maiores contratos representam 17,42% da exposição operacional.</td>
+    </tr>
+    <tr>
+      <td>Qualidade / conciliação dos dados</td>
+      <td>5</td>
+      <td>0</td>
+      <td>Avalia divergências entre e-mail e bases operacionais.</td>
+      <td>E-mail informa 115 ajuizados; base operacional mostra 79. Diferença: 36.</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+</div>
+
+    <h2 class="section-title">3. Como Ler os Três Dashboards</h2>
+    <div class="card"><div class="table-scroll"><table border="1" class="dataframe table table-compact">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Dimensão</th>
+      <th>Fonte</th>
+      <th>Principal leitura</th>
+      <th>Indicador crítico</th>
+      <th>Uso na decisão</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Bacen</td>
+      <td>Histórico Bacen</td>
+      <td>Mede carteira macro da administradora.</td>
+      <td>Inad. contemplados: 7,73%</td>
+      <td>Contextualiza qualidade da carteira.</td>
+    </tr>
+    <tr>
+      <td>SQG E-mail</td>
+      <td>E-mail da cotação</td>
+      <td>Mede experiência securitária declarada.</td>
+      <td>Margem técnica acumulada: -13,40%</td>
+      <td>Mede rentabilidade histórica do seguro.</td>
+    </tr>
+    <tr>
+      <td>Operacional</td>
+      <td>3 arquivos operacionais</td>
+      <td>Mede contratos detalhados por fase.</td>
+      <td>Exposição operacional: R$ 48.604.351,38</td>
+      <td>Explica concentração e estágio dos contratos.</td>
+    </tr>
+  </tbody>
+</table></div></div>
+
+    <h2 class="section-title">4. Bacen: Visão Regulatória da Carteira</h2>
+    <div class="two-col">
+        <div class="card"><table border="1" class="dataframe table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Indicador</th>
+      <th>Valor</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Período final</td>
+      <td>2026-04</td>
+    </tr>
+    <tr>
+      <td>Cotas ativas totais</td>
+      <td>69.410</td>
+    </tr>
+    <tr>
+      <td>Cotas contempladas</td>
+      <td>18.110</td>
+    </tr>
+    <tr>
+      <td>Cotas não contempladas</td>
+      <td>51.300</td>
+    </tr>
+    <tr>
+      <td>Inadimplência contemplados</td>
+      <td>7,73%</td>
+    </tr>
+    <tr>
+      <td>Inadimplência não contemplados</td>
+      <td>17,07%</td>
+    </tr>
+    <tr>
+      <td>Crescimento da carteira</td>
+      <td>7,87%</td>
+    </tr>
+  </tbody>
+</table></div>
+        <div class="card"><div>                            <div id="4faa1832-d0ee-4f7f-8f45-a3357564e6d3" class="plotly-graph-div" style="height:430px; width:100%;"></div>            <script type="text/javascript">                                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("4faa1832-d0ee-4f7f-8f45-a3357564e6d3")) {                    Plotly.newPlot(                        "4faa1832-d0ee-4f7f-8f45-a3357564e6d3",                        [{"mode":"lines+markers","name":"Bacen - Contemplados","x":["2025-11","2025-12","2026-01","2026-02","2026-03","2026-04"],"y":[0.09746388443017656,0.0971375233354076,0.09228633510381458,0.10072153458086466,0.07558338076266363,0.07730535615681944],"type":"scatter"},{"mode":"lines+markers","name":"Bacen - Não contemplados","x":["2025-11","2025-12","2026-01","2026-02","2026-03","2026-04"],"y":[0.1269453956406734,0.13764798418812899,0.16087376297369058,0.14681696016687393,0.14403644717884817,0.17066276803118907],"type":"scatter"}],                        {"template":{"data":{"barpolar":[{"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"type":"carpet"}],"choropleth":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"choropleth"}],"contourcarpet":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"contourcarpet"}],"contour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"contour"}],"heatmapgl":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"heatmapgl"}],"heatmap":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"heatmap"}],"histogram2dcontour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2dcontour"}],"histogram2d":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2d"}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"mesh3d":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"mesh3d"}],"parcoords":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"parcoords"}],"pie":[{"automargin":true,"type":"pie"}],"scatter3d":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatter3d"}],"scattercarpet":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattercarpet"}],"scattergeo":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergeo"}],"scattergl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergl"}],"scattermapbox":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermapbox"}],"scatterpolargl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolargl"}],"scatterpolar":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolar"}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"scatterternary":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterternary"}],"surface":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"surface"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}]},"layout":{"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"autotypenumbers":"strict","coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]],"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]},"colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"geo":{"bgcolor":"white","lakecolor":"white","landcolor":"white","showlakes":true,"showland":true,"subunitcolor":"#C8D4E3"},"hoverlabel":{"align":"left"},"hovermode":"closest","mapbox":{"style":"light"},"paper_bgcolor":"white","plot_bgcolor":"white","polar":{"angularaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""},"bgcolor":"white","radialaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""}},"scene":{"xaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"},"yaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"},"zaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"ternary":{"aaxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"baxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"bgcolor":"white","caxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""}},"title":{"x":0.05},"xaxis":{"automargin":true,"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","zerolinewidth":2},"yaxis":{"automargin":true,"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","zerolinewidth":2}}},"shapes":[{"line":{"dash":"dash"},"type":"line","x0":0,"x1":1,"xref":"x domain","y0":0.023,"y1":0.023,"yref":"y"},{"line":{"dash":"dash"},"type":"line","x0":0,"x1":1,"xref":"x domain","y0":0.1287,"y1":0.1287,"yref":"y"}],"annotations":[{"showarrow":false,"text":"E-mail contemplados 2,30%","x":1,"xanchor":"right","xref":"x domain","y":0.023,"yanchor":"bottom","yref":"y"},{"showarrow":false,"text":"E-mail não contemplados 12,87%","x":1,"xanchor":"right","xref":"x domain","y":0.1287,"yanchor":"bottom","yref":"y"}],"title":{"font":{"size":18},"text":"Bacen x E-mail: Inadimplência","x":0.5,"xanchor":"center"},"font":{"family":"Arial","size":12,"color":"#1F2937"},"margin":{"l":45,"r":25,"t":75,"b":80},"height":430,"paper_bgcolor":"white","plot_bgcolor":"white"},                        {"responsive": true}                    )                };                            </script>        </div></div>
+    </div>
+
+    <h2 class="section-title">5. SQG E-mail: Resultado Técnico</h2>
+    <div class="two-col">
+        <div class="card"><div>                            <div id="7abe10fb-2ac9-4682-a6fa-8adb84eda134" class="plotly-graph-div" style="height:430px; width:100%;"></div>            <script type="text/javascript">                                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("7abe10fb-2ac9-4682-a6fa-8adb84eda134")) {                    Plotly.newPlot(                        "7abe10fb-2ac9-4682-a6fa-8adb84eda134",                        [{"name":"Resultado Bruto","text":["R$ 535.432,42","R$ 669.203,02","R$ 42.443,28","R$ -1.598.104,33","R$ -767.234,28"],"textposition":"outside","x":[2022,2023,2024,2025,2026],"y":[535432.42,669203.02,42443.28,-1598104.33,-767234.28],"type":"bar"}],                        {"template":{"data":{"barpolar":[{"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"type":"carpet"}],"choropleth":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"choropleth"}],"contourcarpet":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"contourcarpet"}],"contour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"contour"}],"heatmapgl":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"heatmapgl"}],"heatmap":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"heatmap"}],"histogram2dcontour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2dcontour"}],"histogram2d":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2d"}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"mesh3d":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"mesh3d"}],"parcoords":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"parcoords"}],"pie":[{"automargin":true,"type":"pie"}],"scatter3d":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatter3d"}],"scattercarpet":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattercarpet"}],"scattergeo":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergeo"}],"scattergl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergl"}],"scattermapbox":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermapbox"}],"scatterpolargl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolargl"}],"scatterpolar":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolar"}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"scatterternary":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterternary"}],"surface":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"surface"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}]},"layout":{"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"autotypenumbers":"strict","coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]],"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]},"colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"geo":{"bgcolor":"white","lakecolor":"white","landcolor":"white","showlakes":true,"showland":true,"subunitcolor":"#C8D4E3"},"hoverlabel":{"align":"left"},"hovermode":"closest","mapbox":{"style":"light"},"paper_bgcolor":"white","plot_bgcolor":"white","polar":{"angularaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""},"bgcolor":"white","radialaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""}},"scene":{"xaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"},"yaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"},"zaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"ternary":{"aaxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"baxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"bgcolor":"white","caxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""}},"title":{"x":0.05},"xaxis":{"automargin":true,"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","zerolinewidth":2},"yaxis":{"automargin":true,"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","zerolinewidth":2}}},"title":{"font":{"size":18},"text":"Resultado Técnico SQG por Ano","x":0.5,"xanchor":"center"},"font":{"family":"Arial","size":12,"color":"#1F2937"},"margin":{"l":45,"r":25,"t":75,"b":80},"height":430,"paper_bgcolor":"white","plot_bgcolor":"white"},                        {"responsive": true}                    )                };                            </script>        </div></div>
+        <div class="card"><div>                            <div id="bce2d682-2711-43a8-92e7-8e9f5f63fbea" class="plotly-graph-div" style="height:430px; width:100%;"></div>            <script type="text/javascript">                                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("bce2d682-2711-43a8-92e7-8e9f5f63fbea")) {                    Plotly.newPlot(                        "bce2d682-2711-43a8-92e7-8e9f5f63fbea",                        [{"mode":"lines+markers+text","name":"Sinistralidade","text":["18,6%","26,1%","68,2%","124,6%","158,7%"],"textposition":"top center","x":[2022,2023,2024,2025,2026],"y":[0.1861079997234055,0.2606109543380065,0.6824273601366233,1.246376564596865,1.587432374864524],"type":"scatter"},{"mode":"lines+markers+text","name":"Taxa de recuperação","text":["37,6%","41,8%","28,9%","18,1%","17,8%"],"textposition":"bottom center","x":[2022,2023,2024,2025,2026],"y":[0.37580992820540876,0.41754928162552973,0.28883807495678077,0.18066332380463965,0.17845150494459378],"type":"scatter"}],                        {"template":{"data":{"barpolar":[{"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"type":"carpet"}],"choropleth":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"choropleth"}],"contourcarpet":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"contourcarpet"}],"contour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"contour"}],"heatmapgl":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"heatmapgl"}],"heatmap":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"heatmap"}],"histogram2dcontour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2dcontour"}],"histogram2d":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2d"}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"mesh3d":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"mesh3d"}],"parcoords":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"parcoords"}],"pie":[{"automargin":true,"type":"pie"}],"scatter3d":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatter3d"}],"scattercarpet":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattercarpet"}],"scattergeo":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergeo"}],"scattergl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergl"}],"scattermapbox":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermapbox"}],"scatterpolargl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolargl"}],"scatterpolar":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolar"}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"scatterternary":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterternary"}],"surface":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"surface"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}]},"layout":{"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"autotypenumbers":"strict","coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]],"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]},"colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"geo":{"bgcolor":"white","lakecolor":"white","landcolor":"white","showlakes":true,"showland":true,"subunitcolor":"#C8D4E3"},"hoverlabel":{"align":"left"},"hovermode":"closest","mapbox":{"style":"light"},"paper_bgcolor":"white","plot_bgcolor":"white","polar":{"angularaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""},"bgcolor":"white","radialaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""}},"scene":{"xaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"},"yaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"},"zaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"ternary":{"aaxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"baxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"bgcolor":"white","caxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""}},"title":{"x":0.05},"xaxis":{"automargin":true,"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","zerolinewidth":2},"yaxis":{"automargin":true,"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","zerolinewidth":2}}},"title":{"font":{"size":18},"text":"Sinistralidade e Recuperação","x":0.5,"xanchor":"center"},"font":{"family":"Arial","size":12,"color":"#1F2937"},"margin":{"l":45,"r":25,"t":75,"b":80},"height":430,"paper_bgcolor":"white","plot_bgcolor":"white"},                        {"responsive": true}                    )                };                            </script>        </div></div>
+    </div>
+    <div class="card"><div class="table-scroll"><table border="1" class="dataframe table table-compact">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Ano</th>
+      <th>Prêmio Líquido</th>
+      <th>IOF</th>
+      <th>Comissão</th>
+      <th>Margem CNP</th>
+      <th>Impostos</th>
+      <th>Sinistro</th>
+      <th>Indenização</th>
+      <th>Ressarcimento</th>
+      <th>Resultado Bruto</th>
+      <th>Sinistralidade</th>
+      <th>Loss Ratio Líquido</th>
+      <th>Taxa de Recuperação</th>
+      <th>Margem Técnica</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2022</td>
+      <td>R$ 1.034.872,28</td>
+      <td>76368.68</td>
+      <td>155233.06</td>
+      <td>103487.23</td>
+      <td>48121.56</td>
+      <td>R$ 192.598,01</td>
+      <td>R$ 308.556,67</td>
+      <td>R$ 115.958,66</td>
+      <td>R$ 535.432,42</td>
+      <td>18,61%</td>
+      <td>18,61%</td>
+      <td>37,58%</td>
+      <td>51,74%</td>
+    </tr>
+    <tr>
+      <td>2023</td>
+      <td>R$ 1.485.412,81</td>
+      <td>109622.02</td>
+      <td>211481.96</td>
+      <td>148541.28</td>
+      <td>69071.70</td>
+      <td>R$ 387.114,85</td>
+      <td>R$ 664.631,08</td>
+      <td>R$ 277.516,23</td>
+      <td>R$ 669.203,02</td>
+      <td>26,06%</td>
+      <td>26,06%</td>
+      <td>41,75%</td>
+      <td>45,05%</td>
+    </tr>
+    <tr>
+      <td>2024</td>
+      <td>R$ 2.014.040,82</td>
+      <td>148631.22</td>
+      <td>302104.00</td>
+      <td>201404.08</td>
+      <td>93652.90</td>
+      <td>R$ 1.374.436,56</td>
+      <td>R$ 1.932.663,31</td>
+      <td>R$ 558.226,75</td>
+      <td>R$ 42.443,28</td>
+      <td>68,24%</td>
+      <td>68,24%</td>
+      <td>28,88%</td>
+      <td>2,11%</td>
+    </tr>
+    <tr>
+      <td>2025</td>
+      <td>R$ 2.943.762,29</td>
+      <td>217244.55</td>
+      <td>441569.11</td>
+      <td>294376.23</td>
+      <td>136884.95</td>
+      <td>R$ 3.669.036,33</td>
+      <td>R$ 4.478.056,99</td>
+      <td>R$ 809.020,66</td>
+      <td>R$ -1.598.104,33</td>
+      <td>124,64%</td>
+      <td>124,64%</td>
+      <td>18,07%</td>
+      <td>-54,29%</td>
+    </tr>
+    <tr>
+      <td>2026</td>
+      <td>R$ 867.976,08</td>
+      <td>64056.63</td>
+      <td>130198.53</td>
+      <td>86797.61</td>
+      <td>40360.89</td>
+      <td>R$ 1.377.853,33</td>
+      <td>R$ 1.677.141,81</td>
+      <td>R$ 299.288,48</td>
+      <td>R$ -767.234,28</td>
+      <td>158,74%</td>
+      <td>158,74%</td>
+      <td>17,85%</td>
+      <td>-88,39%</td>
+    </tr>
+  </tbody>
+</table></div></div>
+
+<h2 class="section-title">6. Operacional: Contratos Detalhados</h2>
+
+<div class="card">
+    <div>                            <div id="9fa668ef-0983-43f7-836b-b391f92b4b01" class="plotly-graph-div" style="height:430px; width:100%;"></div>            <script type="text/javascript">                                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("9fa668ef-0983-43f7-836b-b391f92b4b01")) {                    Plotly.newPlot(                        "9fa668ef-0983-43f7-836b-b391f92b4b01",                        [{"name":"Valor dos Bens","text":["R$ 5,21 mi","R$ 43,40 mi"],"textposition":"outside","x":["Judicializado","Indenizado"],"y":[5208311.27,43396040.11],"type":"bar"}],                        {"template":{"data":{"barpolar":[{"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"type":"carpet"}],"choropleth":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"choropleth"}],"contourcarpet":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"contourcarpet"}],"contour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"contour"}],"heatmapgl":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"heatmapgl"}],"heatmap":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"heatmap"}],"histogram2dcontour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2dcontour"}],"histogram2d":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2d"}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"mesh3d":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"mesh3d"}],"parcoords":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"parcoords"}],"pie":[{"automargin":true,"type":"pie"}],"scatter3d":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatter3d"}],"scattercarpet":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattercarpet"}],"scattergeo":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergeo"}],"scattergl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergl"}],"scattermapbox":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermapbox"}],"scatterpolargl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolargl"}],"scatterpolar":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolar"}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"scatterternary":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterternary"}],"surface":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"surface"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}]},"layout":{"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"autotypenumbers":"strict","coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]],"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]},"colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"geo":{"bgcolor":"white","lakecolor":"white","landcolor":"white","showlakes":true,"showland":true,"subunitcolor":"#C8D4E3"},"hoverlabel":{"align":"left"},"hovermode":"closest","mapbox":{"style":"light"},"paper_bgcolor":"white","plot_bgcolor":"white","polar":{"angularaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""},"bgcolor":"white","radialaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""}},"scene":{"xaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"},"yaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"},"zaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"ternary":{"aaxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"baxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"bgcolor":"white","caxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""}},"title":{"x":0.05},"xaxis":{"automargin":true,"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","zerolinewidth":2},"yaxis":{"automargin":true,"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","zerolinewidth":2}}},"title":{"font":{"size":18},"text":"Operacional: Exposição por Fase","x":0.5,"xanchor":"center"},"font":{"family":"Arial","size":12,"color":"#1F2937"},"margin":{"l":45,"r":25,"t":75,"b":80},"height":430,"paper_bgcolor":"white","plot_bgcolor":"white"},                        {"responsive": true}                    )                };                            </script>        </div>
+</div>
+
+<div class="card">
+    <div class="table-scroll">
+        <table border="1" class="dataframe table table-compact">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Fase</th>
+      <th>Contratos</th>
+      <th>Valor dos Bens</th>
+      <th>Ticket Médio</th>
+      <th>Valor Quitado</th>
+      <th>Saldo Pendente</th>
+      <th>% Médio Pago</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Judicializado</td>
+      <td>79</td>
+      <td>R$ 5.208.311,27</td>
+      <td>R$ 65.927,99</td>
+      <td>R$ 2.143.970,61</td>
+      <td>R$ 243.035,15</td>
+      <td>72,11%</td>
+    </tr>
+    <tr>
+      <td>Indenizado</td>
+      <td>719</td>
+      <td>R$ 43.396.040,11</td>
+      <td>R$ 60.356,11</td>
+      <td>R$ 22.414.460,43</td>
+      <td>R$ 853.007,34</td>
+      <td>61,96%</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+</div>
+
+    <h2 class="section-title">7. Divergências e Pontos de Atenção</h2>
+    <div class="card"><div class="table-scroll"><table border="1" class="dataframe table table-compact">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Tema</th>
+      <th>E-mail</th>
+      <th>Bases / Cálculo</th>
+      <th>Comentário técnico</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Inadimplência de contemplados</td>
+      <td>2,30%</td>
+      <td>7,73%</td>
+      <td>Diferença relevante; precisa confirmar conceito, data-base e universo.</td>
+    </tr>
+    <tr>
+      <td>Inadimplência de não contemplados</td>
+      <td>12,87%</td>
+      <td>17,07%</td>
+      <td>Diferença relevante; precisa confirmar se o e-mail trata base segurada ou carteira total.</td>
+    </tr>
+    <tr>
+      <td>Contratos ajuizados</td>
+      <td>115 contratos</td>
+      <td>79 contratos na fase Judicializado</td>
+      <td>Diferença de 36 contratos; precisa conciliar data de corte e critério.</td>
+    </tr>
+    <tr>
+      <td>Sinistralidade x Loss Ratio Líquido</td>
+      <td>Sinistro, indenização e ressarcimento informados</td>
+      <td>Indenização - Ressarcimento = R$ 7.001.039,08</td>
+      <td>Loss Ratio Líquido coincide com a sinistralidade porque a perda líquida é igual ao sinistro informado.</td>
+    </tr>
+    <tr>
+      <td>Base operacional</td>
+      <td>Não detalha contratos individualmente</td>
+      <td>798 contratos analisados</td>
+      <td>A base operacional permite visão granular, mas precisa estar reconciliada com o e-mail.</td>
+    </tr>
+  </tbody>
+</table></div></div>
+
+    <h2 class="section-title">8. Alertas Automáticos</h2>
+    <div class="card">
+        <p>⚠️ Resultado técnico SQG</p><p>⚠️ Concentração operacional</p><p>⚠️ Qualidade / conciliação dos dados</p>
+    </div>
+
+    <h2 class="section-title">9. Perguntas à Administradora</h2>
+    <div class="card"><div class="table-scroll"><table border="1" class="dataframe table table-compact">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Bloco</th>
+      <th>Pergunta à administradora</th>
+      <th>Motivo técnico</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Universo da análise</td>
+      <td>A sinistralidade informada no e-mail considera toda a carteira ou apenas cotas seguradas?</td>
+      <td>Evita comparar Bacen, segurado e operacional como se fossem o mesmo universo.</td>
+    </tr>
+    <tr>
+      <td>Universo da análise</td>
+      <td>Qual é a data de corte exata do e-mail e dos arquivos operacionais?</td>
+      <td>Divergências podem decorrer apenas de corte temporal.</td>
+    </tr>
+    <tr>
+      <td>Sinistralidade</td>
+      <td>O campo 'Sinistro' do demonstrativo corresponde a indenização líquida de ressarcimento?</td>
+      <td>Explica por que sinistralidade e Loss Ratio Líquido coincidem.</td>
+    </tr>
+    <tr>
+      <td>Sinistralidade</td>
+      <td>Existe abertura da sinistralidade por segmento, safra, grupo e data de contemplação?</td>
+      <td>Permite identificar causa da deterioração.</td>
+    </tr>
+    <tr>
+      <td>Judicializados</td>
+      <td>Por que o e-mail informa 115 contratos ajuizados e a base operacional apresenta número diferente?</td>
+      <td>Divergência relevante para aceitação.</td>
+    </tr>
+    <tr>
+      <td>Judicializados</td>
+      <td>A base de judicializados enviada está completa ou filtrada por status/cobrança/seguradora?</td>
+      <td>Pode haver diferença por filtro ou base parcial.</td>
+    </tr>
+    <tr>
+      <td>Bases operacionais</td>
+      <td>Os arquivos incluem contratos encerrados, rolados, cancelados ou apenas ativos?</td>
+      <td>Define o estoque real de risco transferido.</td>
+    </tr>
+    <tr>
+      <td>Bases operacionais</td>
+      <td>Há contratos duplicados entre as três bases? Qual chave oficial deve ser usada?</td>
+      <td>Evita dupla contagem.</td>
+    </tr>
+    <tr>
+      <td>Recuperação</td>
+      <td>Qual é a política de repasse de recuperações para a seguradora após indenização?</td>
+      <td>Define fluxo econômico da recuperação.</td>
+    </tr>
+    <tr>
+      <td>Recuperação</td>
+      <td>Existe relatório histórico de recuperação por tipo de bem e por safra?</td>
+      <td>Essencial para calcular perda líquida esperada.</td>
+    </tr>
+    <tr>
+      <td>Cobrança</td>
+      <td>A régua de cobrança informada é praticada de forma comprovável em todos os contratos?</td>
+      <td>Valida efetividade operacional.</td>
+    </tr>
+    <tr>
+      <td>Cobrança</td>
+      <td>Qual o SLA real entre inadimplência, negativação, ajuizamento, sinistro e indenização?</td>
+      <td>Afeta frequência e severidade do sinistro.</td>
+    </tr>
+    <tr>
+      <td>Crédito</td>
+      <td>Houve mudança recente na política de crédito, score, renda ou garantias?</td>
+      <td>Explica piora recente.</td>
+    </tr>
+    <tr>
+      <td>Crédito</td>
+      <td>A inadimplência informada de 2,30% / 12,87% é da carteira total ou segurada?</td>
+      <td>Evita divergência conceitual com Bacen.</td>
+    </tr>
+    <tr>
+      <td>Precificação</td>
+      <td>As taxas atuais são suficientes para cobrir a perda observada em 2025 e 2026?</td>
+      <td>Base para reprecificação.</td>
+    </tr>
+    <tr>
+      <td>Aceitação</td>
+      <td>Há segmentos, parceiros ou faixas de crédito que devem ser excluídos ou limitados?</td>
+      <td>Base para limites de aceitação.</td>
+    </tr>
+    <tr>
+      <td>Transição CNP → EZZE</td>
+      <td>Como serão tratados sinistros em aberto, ações em curso e recuperações futuras após a migração?</td>
+      <td>Evita herdar passivo não precificado.</td>
+    </tr>
+  </tbody>
+</table></div></div>
+
+    <h2 class="section-title">10. Conclusão Técnica</h2>
+    <div class="card">
+        <p>A análise integrada sugere que a carteira deve ser tratada como <strong>viável apenas sob condições técnicas</strong>.</p>
+        <p>O principal ponto positivo é a existência de bases operacionais detalhadas, permitindo análise granular por fase, contrato, parceiro e exposição.</p>
+        <p>O principal ponto negativo é a deterioração da experiência securitária recente, com prejuízo em 2025 e 2026, além de divergências entre os números declarados e as bases analisadas.</p>
+        <p>A decisão de aceitação pela EZZE deve depender de: reconciliação das bases, resposta às perguntas críticas, validação da régua de cobrança, análise por segmento e eventual revisão de taxas, franquias, limites ou exclusões.</p>
+    </div>
+
+    <h2 class="section-title">11. Rastreabilidade</h2>
+    <div class="card">
+        <p><strong>Bacen:</strong> /content/Mycon - Histórico.xlsx</p>
+        <p><strong>Pré-Ajuizamento:</strong> /content/PRÉ AJUIZAMENTO E SINISTRO ABERTO.xlsx</p>
+        <p><strong>Judicializado:</strong> /content/COTAS AJUIZADAS COM RECEBIMENTO DE QUEBRA.xlsx</p>
+        <p><strong>Indenizado:</strong> /content/COTAS COM RECEBIMENTO DE QUEBRA.xlsx</p>
+        <p><strong>Dados SQG:</strong> informações extraídas do e-mail da cotação.</p>
+        <p><strong>Data de geração:</strong> 13/06/2026 02:31</p>
+    </div>
+
+    <div class="footer">
+        Estudo preliminar de viabilidade técnica. Uso interno EZZE.
+    </div>
+
+</div>
+
+<div class="ezze-page-actions"><a href="operacional.html">← Anterior: Operacional</a><a href="resultado.html">Próximo: Resultado Econômico →</a></div>
+</body>
+</html>
